@@ -1,0 +1,3754 @@
+openapi: 3.1.0
+info:
+  title: Get Moments API Reference
+  version: 1.0.0
+  description: "This is a generated documentation for Get Moments REST API. You can\
+    \ obtain the OpenAPI schema of the API [here](https://api.dev.getmoments.com/v2.0/schema/getmoments_api.yaml).\
+    \ \n\n## Authentication\nThe API uses Firebase token-based authentication. The\
+    \ client-side is responsible for authenticating the user and obtaining an authentication\
+    \ token. The token should be passed in the `Authorization` header.\n\nTo get the\
+    \ token for API testing, login to administration and go to the user details.\n\
+    In the upper right corner click on GET FIREBASE TOKEN.\n\n## Namespaces\nThe API\
+    \ is divided into namespaces. Each namespace is a separate part of the API. Namespaces\
+    \ are used to group related operations together. \n### account\nUser related operations.\n\
+    ### app\nOperations related only to mobile app and its dashboard views.\n### event\n\
+    Events and Organizers related operations.\n### media\nMedia related operations\
+    \ - videos, images, etc.\n"
+  x-logo:
+    url: https://edit.getmoments.com/assets/logo-f8a16857.svg
+    backgroundColor: '#ffffff'
+    altText: Getmoments
+paths:
+  /v2.0/account/users/:
+    post:
+      operationId: Users Create
+      description: Registers a new user, ensures given Firebase user is stored in
+        the DB, returns user details.
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreate'
+          description: ''
+  /v2.0/account/users/{id}/:
+    get:
+      operationId: Users Retrieve
+      description: Retrieves user details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user.
+        required: true
+      tags:
+      - account
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: Users Update
+      description: Update user details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user.
+        required: true
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdate'
+          description: ''
+    patch:
+      operationId: Users Partial Update
+      description: Update user details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user.
+        required: true
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdate'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdate'
+          description: ''
+    delete:
+      operationId: Users Destroy
+      description: Send a request to cancel the account.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user.
+        required: true
+      tags:
+      - account
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /v2.0/app/events/:
+    get:
+      operationId: App Events List
+      description: Events listing. Use query filters to find specific events.
+      parameters:
+      - name: category
+        required: false
+        in: query
+        description: Desired category
+        schema:
+          type: string
+          enum:
+          - music
+          - sport
+          - culture
+          - business
+          - education
+          - charity
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - app
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAppEventList'
+          description: ''
+  /v2.0/app/favorites/:
+    get:
+      operationId: App Favorites List
+      description: Favorite events and organizers listing.
+      parameters:
+      - name: category
+        required: false
+        in: query
+        description: Category of the event / organizer.
+        schema:
+          type: string
+          enum:
+          - music
+          - sport
+          - culture
+          - business
+          - education
+          - charity
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - app
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAppEventList'
+          description: ''
+  /v2.0/app/organizers/:
+    get:
+      operationId: App Event Organizers List
+      description: Event organizers listing. Use query filters to find specific organizers.
+      parameters:
+      - name: category
+        required: false
+        in: query
+        description: Desired category
+        schema:
+          type: string
+          enum:
+          - music
+          - sport
+          - culture
+          - business
+          - education
+          - charity
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type__name
+        schema:
+          type: string
+      tags:
+      - app
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAppEventOrganizerList'
+          description: ''
+  /v2.0/event/events/:
+    get:
+      operationId: Events List
+      description: Events listing. Use query filters to find specific events.
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: private
+        schema:
+          type: boolean
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: slug
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: integer
+      tags:
+      - event
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventListList'
+          description: ''
+  /v2.0/event/events/{id}/:
+    get:
+      operationId: Events Retrieve
+      description: Retrieves event details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this event.
+        required: true
+      tags:
+      - event
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetail'
+          description: ''
+  /v2.0/event/events/{id}/add-to-favorites/:
+    post:
+      operationId: Events Add To Favorites Create
+      description: Add the event to the user's favorites. If the event is already
+        in the user's favorites, it will return 200, otherwise 201.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this event.
+        required: true
+      tags:
+      - event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavoriteAdd'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavoriteAdd'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavoriteAdd'
+          description: ''
+        '404':
+          description: No response body
+  /v2.0/event/events/{id}/remove-from-favorites/:
+    post:
+      operationId: Events Remove From Favorites Create
+      description: Remove the event from the user's favorites.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this event.
+        required: true
+      tags:
+      - event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavoriteRemove'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavoriteRemove'
+          description: ''
+  /v2.0/event/organizers/:
+    get:
+      operationId: Organizers List
+      description: Event organizers listing.
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: integer
+      tags:
+      - event
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventOrganizerList'
+          description: ''
+  /v2.0/event/organizers/{id}/:
+    get:
+      operationId: Organizers Retrieve
+      description: Retrieves event organizer details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Organizer.
+        required: true
+      tags:
+      - event
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventOrganizer'
+          description: ''
+  /v2.0/event/organizers/{id}/add-to-favorites/:
+    post:
+      operationId: Organizers Add To Favorites Create
+      description: Add the organizer to the user's favorites. If the organizer is
+        already in the user's favorites, it will return 200, otherwise 201.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Organizer.
+        required: true
+      tags:
+      - event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventOrganizer'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavoriteAdd'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavoriteAdd'
+          description: ''
+        '404':
+          description: No response body
+  /v2.0/event/organizers/{id}/remove-from-favorites/:
+    post:
+      operationId: Organizers Remove From Favorites Create
+      description: Remove the organizer from the user's favorites.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Organizer.
+        required: true
+      tags:
+      - event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventOrganizer'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavoriteRemove'
+          description: ''
+  /v2.0/media/user-videos/:
+    get:
+      operationId: User Videos List
+      description: List videos created by the user.
+      parameters:
+      - in: query
+        name: creation_time
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: event
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: platform
+        schema:
+          type:
+          - string
+          - 'null'
+          enum:
+          - android
+          - ios
+        description: |-
+          Platform which was used when recording the video
+
+          * `ios` - iOS
+          * `android` - Android
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - media
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserVideoListList'
+          description: ''
+    post:
+      operationId: User Videos Create
+      description: Creates a new user video object.
+      tags:
+      - media
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserVideoCreate'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVideoCreate'
+          description: ''
+  /v2.0/media/user-videos/{id}/:
+    get:
+      operationId: User Videos Retrieve
+      description: Retrieves user video details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user video.
+        required: true
+      tags:
+      - media
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVideo'
+          description: ''
+    put:
+      operationId: User Videos Update
+      description: Update user video details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user video.
+        required: true
+      tags:
+      - media
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserVideoUpdate'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVideoUpdate'
+          description: ''
+    patch:
+      operationId: User Videos Partial Update
+      description: Update user video details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user video.
+        required: true
+      tags:
+      - media
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserVideoUpdate'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVideoUpdate'
+          description: ''
+    delete:
+      operationId: User Videos Destroy
+      description: Deletes a user video.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user video.
+        required: true
+      tags:
+      - media
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /v2.0/media/user-videos/{id}/add-chunk/:
+    post:
+      operationId: User Videos Add Chunk Create
+      description: Add a chunk to an existing video
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user video.
+        required: true
+      tags:
+      - media
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVideoChunk'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateVideoChunk'
+          description: ''
+components:
+  schemas:
+    AppEvent:
+      type: object
+      description: Results contain mix of events and organizers defined by the item_type
+        field
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: Name of the event
+          maxLength: 150
+        slug:
+          type: string
+          description: Unique slug / hashtag
+          maxLength: 50
+        type:
+          allOf:
+          - $ref: '#/components/schemas/EventType'
+          readOnly: true
+          description: Type of the event / organizer
+        organizer:
+          allOf:
+          - $ref: '#/components/schemas/EventOrganizer'
+          description: Organizer of the event
+        avatar:
+          type: string
+          format: uri
+          readOnly: true
+          description: Avatar image for the organizer
+        avatar_width:
+          type: integer
+          readOnly: true
+          description: Avatar image width for the organizer
+        avatar_height:
+          type: integer
+          readOnly: true
+          description: Avatar image height for the organizer
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventList'
+          readOnly: true
+          description: List of events related to the organizer
+        image:
+          type:
+          - string
+          - 'null'
+          format: uri
+          title: Event image
+          description: Path to the image
+        favorite:
+          type: boolean
+          readOnly: true
+          description: Marks the event / organizer as favorite for the user
+        img_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Image width (readonly)
+        img_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Image height (readonly)
+        item_type:
+          type: string
+          readOnly: true
+          description: 'Type of the item: event or organizer'
+        private:
+          type: boolean
+          description: Marks a private event
+        start_time:
+          type: string
+          format: date-time
+          title: Event start time
+          description: Event start date and time
+        recording_start_time:
+          type: string
+          format: date-time
+          description: Date and time when it's allowed to start recording
+        recording_end_time:
+          type: string
+          format: date-time
+          description: Date and time until when it's allowed to record
+        upload_end_time:
+          type: string
+          format: date-time
+          description: Date and time until when the upload should be finished.
+        venue:
+          type: string
+          description: Name of the venue
+          maxLength: 200
+        stage:
+          type: string
+          description: Name of the stage (optional)
+          maxLength: 200
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+        country:
+          description: |-
+            Country code
+
+            * `AF` - Afghanistan
+            * `AX` - Åland Islands
+            * `AL` - Albania
+            * `DZ` - Algeria
+            * `AS` - American Samoa
+            * `AD` - Andorra
+            * `AO` - Angola
+            * `AI` - Anguilla
+            * `AQ` - Antarctica
+            * `AG` - Antigua and Barbuda
+            * `AR` - Argentina
+            * `AM` - Armenia
+            * `AW` - Aruba
+            * `AU` - Australia
+            * `AT` - Austria
+            * `AZ` - Azerbaijan
+            * `BS` - Bahamas
+            * `BH` - Bahrain
+            * `BD` - Bangladesh
+            * `BB` - Barbados
+            * `BY` - Belarus
+            * `BE` - Belgium
+            * `BZ` - Belize
+            * `BJ` - Benin
+            * `BM` - Bermuda
+            * `BT` - Bhutan
+            * `BO` - Bolivia
+            * `BQ` - Bonaire, Sint Eustatius and Saba
+            * `BA` - Bosnia and Herzegovina
+            * `BW` - Botswana
+            * `BV` - Bouvet Island
+            * `BR` - Brazil
+            * `IO` - British Indian Ocean Territory
+            * `BN` - Brunei
+            * `BG` - Bulgaria
+            * `BF` - Burkina Faso
+            * `BI` - Burundi
+            * `CV` - Cabo Verde
+            * `KH` - Cambodia
+            * `CM` - Cameroon
+            * `CA` - Canada
+            * `KY` - Cayman Islands
+            * `CF` - Central African Republic
+            * `TD` - Chad
+            * `CL` - Chile
+            * `CN` - China
+            * `CX` - Christmas Island
+            * `CC` - Cocos (Keeling) Islands
+            * `CO` - Colombia
+            * `KM` - Comoros
+            * `CG` - Congo
+            * `CD` - Congo (the Democratic Republic of the)
+            * `CK` - Cook Islands
+            * `CR` - Costa Rica
+            * `CI` - Côte d'Ivoire
+            * `HR` - Croatia
+            * `CU` - Cuba
+            * `CW` - Curaçao
+            * `CY` - Cyprus
+            * `CZ` - Czechia
+            * `DK` - Denmark
+            * `DJ` - Djibouti
+            * `DM` - Dominica
+            * `DO` - Dominican Republic
+            * `EC` - Ecuador
+            * `EG` - Egypt
+            * `SV` - El Salvador
+            * `GQ` - Equatorial Guinea
+            * `ER` - Eritrea
+            * `EE` - Estonia
+            * `SZ` - Eswatini
+            * `ET` - Ethiopia
+            * `FK` - Falkland Islands (Malvinas)
+            * `FO` - Faroe Islands
+            * `FJ` - Fiji
+            * `FI` - Finland
+            * `FR` - France
+            * `GF` - French Guiana
+            * `PF` - French Polynesia
+            * `TF` - French Southern Territories
+            * `GA` - Gabon
+            * `GM` - Gambia
+            * `GE` - Georgia
+            * `DE` - Germany
+            * `GH` - Ghana
+            * `GI` - Gibraltar
+            * `GR` - Greece
+            * `GL` - Greenland
+            * `GD` - Grenada
+            * `GP` - Guadeloupe
+            * `GU` - Guam
+            * `GT` - Guatemala
+            * `GG` - Guernsey
+            * `GN` - Guinea
+            * `GW` - Guinea-Bissau
+            * `GY` - Guyana
+            * `HT` - Haiti
+            * `HM` - Heard Island and McDonald Islands
+            * `VA` - Holy See
+            * `HN` - Honduras
+            * `HK` - Hong Kong
+            * `HU` - Hungary
+            * `IS` - Iceland
+            * `IN` - India
+            * `ID` - Indonesia
+            * `IR` - Iran
+            * `IQ` - Iraq
+            * `IE` - Ireland
+            * `IM` - Isle of Man
+            * `IL` - Israel
+            * `IT` - Italy
+            * `JM` - Jamaica
+            * `JP` - Japan
+            * `JE` - Jersey
+            * `JO` - Jordan
+            * `KZ` - Kazakhstan
+            * `KE` - Kenya
+            * `KI` - Kiribati
+            * `KW` - Kuwait
+            * `KG` - Kyrgyzstan
+            * `LA` - Laos
+            * `LV` - Latvia
+            * `LB` - Lebanon
+            * `LS` - Lesotho
+            * `LR` - Liberia
+            * `LY` - Libya
+            * `LI` - Liechtenstein
+            * `LT` - Lithuania
+            * `LU` - Luxembourg
+            * `MO` - Macao
+            * `MG` - Madagascar
+            * `MW` - Malawi
+            * `MY` - Malaysia
+            * `MV` - Maldives
+            * `ML` - Mali
+            * `MT` - Malta
+            * `MH` - Marshall Islands
+            * `MQ` - Martinique
+            * `MR` - Mauritania
+            * `MU` - Mauritius
+            * `YT` - Mayotte
+            * `MX` - Mexico
+            * `FM` - Micronesia (Federated States of)
+            * `MD` - Moldova
+            * `MC` - Monaco
+            * `MN` - Mongolia
+            * `ME` - Montenegro
+            * `MS` - Montserrat
+            * `MA` - Morocco
+            * `MZ` - Mozambique
+            * `MM` - Myanmar
+            * `NA` - Namibia
+            * `NR` - Nauru
+            * `NP` - Nepal
+            * `NL` - Netherlands
+            * `NC` - New Caledonia
+            * `NZ` - New Zealand
+            * `NI` - Nicaragua
+            * `NE` - Niger
+            * `NG` - Nigeria
+            * `NU` - Niue
+            * `NF` - Norfolk Island
+            * `KP` - North Korea
+            * `MK` - North Macedonia
+            * `MP` - Northern Mariana Islands
+            * `NO` - Norway
+            * `OM` - Oman
+            * `PK` - Pakistan
+            * `PW` - Palau
+            * `PS` - Palestine, State of
+            * `PA` - Panama
+            * `PG` - Papua New Guinea
+            * `PY` - Paraguay
+            * `PE` - Peru
+            * `PH` - Philippines
+            * `PN` - Pitcairn
+            * `PL` - Poland
+            * `PT` - Portugal
+            * `PR` - Puerto Rico
+            * `QA` - Qatar
+            * `RE` - Réunion
+            * `RO` - Romania
+            * `RU` - Russia
+            * `RW` - Rwanda
+            * `BL` - Saint Barthélemy
+            * `SH` - Saint Helena, Ascension and Tristan da Cunha
+            * `KN` - Saint Kitts and Nevis
+            * `LC` - Saint Lucia
+            * `MF` - Saint Martin (French part)
+            * `PM` - Saint Pierre and Miquelon
+            * `VC` - Saint Vincent and the Grenadines
+            * `WS` - Samoa
+            * `SM` - San Marino
+            * `ST` - Sao Tome and Principe
+            * `SA` - Saudi Arabia
+            * `SN` - Senegal
+            * `RS` - Serbia
+            * `SC` - Seychelles
+            * `SL` - Sierra Leone
+            * `SG` - Singapore
+            * `SX` - Sint Maarten (Dutch part)
+            * `SK` - Slovakia
+            * `SI` - Slovenia
+            * `SB` - Solomon Islands
+            * `SO` - Somalia
+            * `ZA` - South Africa
+            * `GS` - South Georgia and the South Sandwich Islands
+            * `KR` - South Korea
+            * `SS` - South Sudan
+            * `ES` - Spain
+            * `LK` - Sri Lanka
+            * `SD` - Sudan
+            * `SR` - Suriname
+            * `SJ` - Svalbard and Jan Mayen
+            * `SE` - Sweden
+            * `CH` - Switzerland
+            * `SY` - Syria
+            * `TW` - Taiwan
+            * `TJ` - Tajikistan
+            * `TZ` - Tanzania
+            * `TH` - Thailand
+            * `TL` - Timor-Leste
+            * `TG` - Togo
+            * `TK` - Tokelau
+            * `TO` - Tonga
+            * `TT` - Trinidad and Tobago
+            * `TN` - Tunisia
+            * `TR` - Türkiye
+            * `TM` - Turkmenistan
+            * `TC` - Turks and Caicos Islands
+            * `TV` - Tuvalu
+            * `UG` - Uganda
+            * `UA` - Ukraine
+            * `AE` - United Arab Emirates
+            * `GB` - United Kingdom
+            * `UM` - United States Minor Outlying Islands
+            * `US` - United States of America
+            * `UY` - Uruguay
+            * `UZ` - Uzbekistan
+            * `VU` - Vanuatu
+            * `VE` - Venezuela
+            * `VN` - Vietnam
+            * `VG` - Virgin Islands (British)
+            * `VI` - Virgin Islands (U.S.)
+            * `WF` - Wallis and Futuna
+            * `EH` - Western Sahara
+            * `YE` - Yemen
+            * `ZM` - Zambia
+            * `ZW` - Zimbabwe
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        zip:
+          type:
+          - string
+          - 'null'
+          title: ZIP code
+          description: ZIP code
+        parent:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Parent event - e.g. festival
+        final_videos_count:
+          type: integer
+          description: |-
+            Returns number of final videos of the event, recomputes if necessary
+            :return:
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        videos:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppEventsListFinalVideo'
+          readOnly: true
+          description: List of videos related to the event and user
+      required:
+      - avatar
+      - avatar_height
+      - avatar_width
+      - created
+      - events
+      - favorite
+      - final_videos_count
+      - id
+      - img_height
+      - img_width
+      - item_type
+      - modified
+      - name
+      - organizer
+      - recording_end_time
+      - slug
+      - start_time
+      - type
+      - venue
+      - videos
+    AppEventOrganizer:
+      type: object
+      description: Event organizers
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+        item_type:
+          type: string
+          readOnly: true
+          description: 'Type of the item: event or organizer'
+        type:
+          $ref: '#/components/schemas/EventOrganizerType'
+        favorite:
+          type: boolean
+          readOnly: true
+        avatar:
+          type:
+          - string
+          - 'null'
+          format: uri
+        avatar_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        avatar_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventList'
+          readOnly: true
+          description: List of events related to the organizer
+      required:
+      - avatar_height
+      - avatar_width
+      - created
+      - events
+      - favorite
+      - id
+      - item_type
+      - modified
+      - name
+      - type
+    AppEventsListFinalVideo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        file:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Path to the video file
+        stream_path:
+          type:
+          - string
+          - 'null'
+          description: URL with the video stream
+        thumb:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Path to the thumbnail image
+        thumb_width:
+          type: integer
+          readOnly: true
+          description: Width of the thumbnail
+        thumb_height:
+          type: integer
+          readOnly: true
+          description: Height of the thumbnail
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        attributes:
+          allOf:
+          - $ref: '#/components/schemas/AppVideoAttributes'
+          readOnly: true
+          description: Attributes of the video
+      required:
+      - attributes
+      - created
+      - id
+      - modified
+      - thumb_height
+      - thumb_width
+    AppVideoAttributes:
+      type: object
+      properties:
+        length:
+          type:
+          - string
+          - 'null'
+          format: time
+          description: Video length
+        resolution:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+            maximum: 32767
+            minimum: 0
+          description: Video resolution in pixels
+        horizontal:
+          type:
+          - boolean
+          - 'null'
+          description: If True, video was taken on mobile horizontally
+    BlankEnum:
+      enum:
+      - ''
+    CategoryEnum:
+      enum:
+      - music
+      - sport
+      - culture
+      - business
+      - education
+      - charity
+      type: string
+      description: |-
+        * `music` - Music
+        * `sport` - Sport
+        * `culture` - Culture
+        * `business` - Business
+        * `education` - Education
+        * `charity` - Charity
+    ChunksRotationEnum:
+      enum:
+      - 0
+      - -90
+      - -180
+      - -270
+      - 90
+      - 180
+      - 270
+      type: integer
+      description: |-
+        * `0` - 0
+        * `-90` - -90
+        * `-180` - -180
+        * `-270` - -270
+        * `90` - 90
+        * `180` - 180
+        * `270` - 270
+    CountryEnum:
+      enum:
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - GB
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
+      type: string
+      description: |-
+        * `AF` - Afghanistan
+        * `AX` - Åland Islands
+        * `AL` - Albania
+        * `DZ` - Algeria
+        * `AS` - American Samoa
+        * `AD` - Andorra
+        * `AO` - Angola
+        * `AI` - Anguilla
+        * `AQ` - Antarctica
+        * `AG` - Antigua and Barbuda
+        * `AR` - Argentina
+        * `AM` - Armenia
+        * `AW` - Aruba
+        * `AU` - Australia
+        * `AT` - Austria
+        * `AZ` - Azerbaijan
+        * `BS` - Bahamas
+        * `BH` - Bahrain
+        * `BD` - Bangladesh
+        * `BB` - Barbados
+        * `BY` - Belarus
+        * `BE` - Belgium
+        * `BZ` - Belize
+        * `BJ` - Benin
+        * `BM` - Bermuda
+        * `BT` - Bhutan
+        * `BO` - Bolivia
+        * `BQ` - Bonaire, Sint Eustatius and Saba
+        * `BA` - Bosnia and Herzegovina
+        * `BW` - Botswana
+        * `BV` - Bouvet Island
+        * `BR` - Brazil
+        * `IO` - British Indian Ocean Territory
+        * `BN` - Brunei
+        * `BG` - Bulgaria
+        * `BF` - Burkina Faso
+        * `BI` - Burundi
+        * `CV` - Cabo Verde
+        * `KH` - Cambodia
+        * `CM` - Cameroon
+        * `CA` - Canada
+        * `KY` - Cayman Islands
+        * `CF` - Central African Republic
+        * `TD` - Chad
+        * `CL` - Chile
+        * `CN` - China
+        * `CX` - Christmas Island
+        * `CC` - Cocos (Keeling) Islands
+        * `CO` - Colombia
+        * `KM` - Comoros
+        * `CG` - Congo
+        * `CD` - Congo (the Democratic Republic of the)
+        * `CK` - Cook Islands
+        * `CR` - Costa Rica
+        * `CI` - Côte d'Ivoire
+        * `HR` - Croatia
+        * `CU` - Cuba
+        * `CW` - Curaçao
+        * `CY` - Cyprus
+        * `CZ` - Czechia
+        * `DK` - Denmark
+        * `DJ` - Djibouti
+        * `DM` - Dominica
+        * `DO` - Dominican Republic
+        * `EC` - Ecuador
+        * `EG` - Egypt
+        * `SV` - El Salvador
+        * `GQ` - Equatorial Guinea
+        * `ER` - Eritrea
+        * `EE` - Estonia
+        * `SZ` - Eswatini
+        * `ET` - Ethiopia
+        * `FK` - Falkland Islands (Malvinas)
+        * `FO` - Faroe Islands
+        * `FJ` - Fiji
+        * `FI` - Finland
+        * `FR` - France
+        * `GF` - French Guiana
+        * `PF` - French Polynesia
+        * `TF` - French Southern Territories
+        * `GA` - Gabon
+        * `GM` - Gambia
+        * `GE` - Georgia
+        * `DE` - Germany
+        * `GH` - Ghana
+        * `GI` - Gibraltar
+        * `GR` - Greece
+        * `GL` - Greenland
+        * `GD` - Grenada
+        * `GP` - Guadeloupe
+        * `GU` - Guam
+        * `GT` - Guatemala
+        * `GG` - Guernsey
+        * `GN` - Guinea
+        * `GW` - Guinea-Bissau
+        * `GY` - Guyana
+        * `HT` - Haiti
+        * `HM` - Heard Island and McDonald Islands
+        * `VA` - Holy See
+        * `HN` - Honduras
+        * `HK` - Hong Kong
+        * `HU` - Hungary
+        * `IS` - Iceland
+        * `IN` - India
+        * `ID` - Indonesia
+        * `IR` - Iran
+        * `IQ` - Iraq
+        * `IE` - Ireland
+        * `IM` - Isle of Man
+        * `IL` - Israel
+        * `IT` - Italy
+        * `JM` - Jamaica
+        * `JP` - Japan
+        * `JE` - Jersey
+        * `JO` - Jordan
+        * `KZ` - Kazakhstan
+        * `KE` - Kenya
+        * `KI` - Kiribati
+        * `KW` - Kuwait
+        * `KG` - Kyrgyzstan
+        * `LA` - Laos
+        * `LV` - Latvia
+        * `LB` - Lebanon
+        * `LS` - Lesotho
+        * `LR` - Liberia
+        * `LY` - Libya
+        * `LI` - Liechtenstein
+        * `LT` - Lithuania
+        * `LU` - Luxembourg
+        * `MO` - Macao
+        * `MG` - Madagascar
+        * `MW` - Malawi
+        * `MY` - Malaysia
+        * `MV` - Maldives
+        * `ML` - Mali
+        * `MT` - Malta
+        * `MH` - Marshall Islands
+        * `MQ` - Martinique
+        * `MR` - Mauritania
+        * `MU` - Mauritius
+        * `YT` - Mayotte
+        * `MX` - Mexico
+        * `FM` - Micronesia (Federated States of)
+        * `MD` - Moldova
+        * `MC` - Monaco
+        * `MN` - Mongolia
+        * `ME` - Montenegro
+        * `MS` - Montserrat
+        * `MA` - Morocco
+        * `MZ` - Mozambique
+        * `MM` - Myanmar
+        * `NA` - Namibia
+        * `NR` - Nauru
+        * `NP` - Nepal
+        * `NL` - Netherlands
+        * `NC` - New Caledonia
+        * `NZ` - New Zealand
+        * `NI` - Nicaragua
+        * `NE` - Niger
+        * `NG` - Nigeria
+        * `NU` - Niue
+        * `NF` - Norfolk Island
+        * `KP` - North Korea
+        * `MK` - North Macedonia
+        * `MP` - Northern Mariana Islands
+        * `NO` - Norway
+        * `OM` - Oman
+        * `PK` - Pakistan
+        * `PW` - Palau
+        * `PS` - Palestine, State of
+        * `PA` - Panama
+        * `PG` - Papua New Guinea
+        * `PY` - Paraguay
+        * `PE` - Peru
+        * `PH` - Philippines
+        * `PN` - Pitcairn
+        * `PL` - Poland
+        * `PT` - Portugal
+        * `PR` - Puerto Rico
+        * `QA` - Qatar
+        * `RE` - Réunion
+        * `RO` - Romania
+        * `RU` - Russia
+        * `RW` - Rwanda
+        * `BL` - Saint Barthélemy
+        * `SH` - Saint Helena, Ascension and Tristan da Cunha
+        * `KN` - Saint Kitts and Nevis
+        * `LC` - Saint Lucia
+        * `MF` - Saint Martin (French part)
+        * `PM` - Saint Pierre and Miquelon
+        * `VC` - Saint Vincent and the Grenadines
+        * `WS` - Samoa
+        * `SM` - San Marino
+        * `ST` - Sao Tome and Principe
+        * `SA` - Saudi Arabia
+        * `SN` - Senegal
+        * `RS` - Serbia
+        * `SC` - Seychelles
+        * `SL` - Sierra Leone
+        * `SG` - Singapore
+        * `SX` - Sint Maarten (Dutch part)
+        * `SK` - Slovakia
+        * `SI` - Slovenia
+        * `SB` - Solomon Islands
+        * `SO` - Somalia
+        * `ZA` - South Africa
+        * `GS` - South Georgia and the South Sandwich Islands
+        * `KR` - South Korea
+        * `SS` - South Sudan
+        * `ES` - Spain
+        * `LK` - Sri Lanka
+        * `SD` - Sudan
+        * `SR` - Suriname
+        * `SJ` - Svalbard and Jan Mayen
+        * `SE` - Sweden
+        * `CH` - Switzerland
+        * `SY` - Syria
+        * `TW` - Taiwan
+        * `TJ` - Tajikistan
+        * `TZ` - Tanzania
+        * `TH` - Thailand
+        * `TL` - Timor-Leste
+        * `TG` - Togo
+        * `TK` - Tokelau
+        * `TO` - Tonga
+        * `TT` - Trinidad and Tobago
+        * `TN` - Tunisia
+        * `TR` - Türkiye
+        * `TM` - Turkmenistan
+        * `TC` - Turks and Caicos Islands
+        * `TV` - Tuvalu
+        * `UG` - Uganda
+        * `UA` - Ukraine
+        * `AE` - United Arab Emirates
+        * `GB` - United Kingdom
+        * `UM` - United States Minor Outlying Islands
+        * `US` - United States of America
+        * `UY` - Uruguay
+        * `UZ` - Uzbekistan
+        * `VU` - Vanuatu
+        * `VE` - Venezuela
+        * `VN` - Vietnam
+        * `VG` - Virgin Islands (British)
+        * `VI` - Virgin Islands (U.S.)
+        * `WF` - Wallis and Futuna
+        * `EH` - Western Sahara
+        * `YE` - Yemen
+        * `ZM` - Zambia
+        * `ZW` - Zimbabwe
+    CreateVideoChunk:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        file:
+          type: string
+        order:
+          type:
+          - integer
+          - 'null'
+          maximum: 32767
+          minimum: 0
+          description: Order of the chunk
+        start:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: Start time
+          description: Start time of the chunk
+        end:
+          type:
+          - string
+          - 'null'
+          format: time
+          title: End time
+          description: End time of the chunk
+        frames_count:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        background_uploaded:
+          type:
+          - boolean
+          - 'null'
+          description: True if chunk was uploaded in a background process
+      required:
+      - file
+      - frames_count
+      - id
+    EventDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: Name of the event
+          maxLength: 150
+        sub_name:
+          type:
+          - string
+          - 'null'
+          description: Sub-name of the event
+        short_name:
+          type: string
+          description: Shorter name of the event
+          maxLength: 60
+        slug:
+          type: string
+          description: Unique slug / hashtag
+          maxLength: 50
+        description:
+          type:
+          - string
+          - 'null'
+          description: Event description
+        type:
+          $ref: '#/components/schemas/EventType'
+        image:
+          type:
+          - string
+          - 'null'
+          format: uri
+          title: Event image
+          description: Path to the image
+        img_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Image width (readonly)
+        img_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Image height (readonly)
+        video:
+          type:
+          - string
+          - 'null'
+          format: uri
+          title: Event video
+          description: Path to the video
+        login_prompt_image:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Path to the login prompt image
+        login_prompt_text:
+          type:
+          - string
+          - 'null'
+          description: Login prompt text
+        organizer:
+          $ref: '#/components/schemas/EventOrganizer'
+        display_organizer:
+          type: boolean
+          description: If true, organizer is shown in apps
+        private:
+          type: boolean
+          description: Marks a private event
+        start_time:
+          type: string
+          format: date-time
+          title: Event start time
+          description: Event start date and time
+        recording_start_time:
+          type: string
+          format: date-time
+          description: Date and time when it's allowed to start recording
+        recording_end_time:
+          type: string
+          format: date-time
+          description: Date and time until when it's allowed to record
+        upload_photos:
+          type:
+          - boolean
+          - 'null'
+          description: If True, upload photos is enabled
+        upload_end_time:
+          type: string
+          format: date-time
+          description: Date and time until when the upload should be finished.
+        manual_upload_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: If true, upload from gallery is allowed
+        venue:
+          type: string
+          description: Name of the venue
+          maxLength: 200
+        stage:
+          type: string
+          description: Name of the stage (optional)
+          maxLength: 200
+        street:
+          type:
+          - string
+          - 'null'
+          description: Street and number
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+        country:
+          description: |-
+            Country code
+
+            * `AF` - Afghanistan
+            * `AX` - Åland Islands
+            * `AL` - Albania
+            * `DZ` - Algeria
+            * `AS` - American Samoa
+            * `AD` - Andorra
+            * `AO` - Angola
+            * `AI` - Anguilla
+            * `AQ` - Antarctica
+            * `AG` - Antigua and Barbuda
+            * `AR` - Argentina
+            * `AM` - Armenia
+            * `AW` - Aruba
+            * `AU` - Australia
+            * `AT` - Austria
+            * `AZ` - Azerbaijan
+            * `BS` - Bahamas
+            * `BH` - Bahrain
+            * `BD` - Bangladesh
+            * `BB` - Barbados
+            * `BY` - Belarus
+            * `BE` - Belgium
+            * `BZ` - Belize
+            * `BJ` - Benin
+            * `BM` - Bermuda
+            * `BT` - Bhutan
+            * `BO` - Bolivia
+            * `BQ` - Bonaire, Sint Eustatius and Saba
+            * `BA` - Bosnia and Herzegovina
+            * `BW` - Botswana
+            * `BV` - Bouvet Island
+            * `BR` - Brazil
+            * `IO` - British Indian Ocean Territory
+            * `BN` - Brunei
+            * `BG` - Bulgaria
+            * `BF` - Burkina Faso
+            * `BI` - Burundi
+            * `CV` - Cabo Verde
+            * `KH` - Cambodia
+            * `CM` - Cameroon
+            * `CA` - Canada
+            * `KY` - Cayman Islands
+            * `CF` - Central African Republic
+            * `TD` - Chad
+            * `CL` - Chile
+            * `CN` - China
+            * `CX` - Christmas Island
+            * `CC` - Cocos (Keeling) Islands
+            * `CO` - Colombia
+            * `KM` - Comoros
+            * `CG` - Congo
+            * `CD` - Congo (the Democratic Republic of the)
+            * `CK` - Cook Islands
+            * `CR` - Costa Rica
+            * `CI` - Côte d'Ivoire
+            * `HR` - Croatia
+            * `CU` - Cuba
+            * `CW` - Curaçao
+            * `CY` - Cyprus
+            * `CZ` - Czechia
+            * `DK` - Denmark
+            * `DJ` - Djibouti
+            * `DM` - Dominica
+            * `DO` - Dominican Republic
+            * `EC` - Ecuador
+            * `EG` - Egypt
+            * `SV` - El Salvador
+            * `GQ` - Equatorial Guinea
+            * `ER` - Eritrea
+            * `EE` - Estonia
+            * `SZ` - Eswatini
+            * `ET` - Ethiopia
+            * `FK` - Falkland Islands (Malvinas)
+            * `FO` - Faroe Islands
+            * `FJ` - Fiji
+            * `FI` - Finland
+            * `FR` - France
+            * `GF` - French Guiana
+            * `PF` - French Polynesia
+            * `TF` - French Southern Territories
+            * `GA` - Gabon
+            * `GM` - Gambia
+            * `GE` - Georgia
+            * `DE` - Germany
+            * `GH` - Ghana
+            * `GI` - Gibraltar
+            * `GR` - Greece
+            * `GL` - Greenland
+            * `GD` - Grenada
+            * `GP` - Guadeloupe
+            * `GU` - Guam
+            * `GT` - Guatemala
+            * `GG` - Guernsey
+            * `GN` - Guinea
+            * `GW` - Guinea-Bissau
+            * `GY` - Guyana
+            * `HT` - Haiti
+            * `HM` - Heard Island and McDonald Islands
+            * `VA` - Holy See
+            * `HN` - Honduras
+            * `HK` - Hong Kong
+            * `HU` - Hungary
+            * `IS` - Iceland
+            * `IN` - India
+            * `ID` - Indonesia
+            * `IR` - Iran
+            * `IQ` - Iraq
+            * `IE` - Ireland
+            * `IM` - Isle of Man
+            * `IL` - Israel
+            * `IT` - Italy
+            * `JM` - Jamaica
+            * `JP` - Japan
+            * `JE` - Jersey
+            * `JO` - Jordan
+            * `KZ` - Kazakhstan
+            * `KE` - Kenya
+            * `KI` - Kiribati
+            * `KW` - Kuwait
+            * `KG` - Kyrgyzstan
+            * `LA` - Laos
+            * `LV` - Latvia
+            * `LB` - Lebanon
+            * `LS` - Lesotho
+            * `LR` - Liberia
+            * `LY` - Libya
+            * `LI` - Liechtenstein
+            * `LT` - Lithuania
+            * `LU` - Luxembourg
+            * `MO` - Macao
+            * `MG` - Madagascar
+            * `MW` - Malawi
+            * `MY` - Malaysia
+            * `MV` - Maldives
+            * `ML` - Mali
+            * `MT` - Malta
+            * `MH` - Marshall Islands
+            * `MQ` - Martinique
+            * `MR` - Mauritania
+            * `MU` - Mauritius
+            * `YT` - Mayotte
+            * `MX` - Mexico
+            * `FM` - Micronesia (Federated States of)
+            * `MD` - Moldova
+            * `MC` - Monaco
+            * `MN` - Mongolia
+            * `ME` - Montenegro
+            * `MS` - Montserrat
+            * `MA` - Morocco
+            * `MZ` - Mozambique
+            * `MM` - Myanmar
+            * `NA` - Namibia
+            * `NR` - Nauru
+            * `NP` - Nepal
+            * `NL` - Netherlands
+            * `NC` - New Caledonia
+            * `NZ` - New Zealand
+            * `NI` - Nicaragua
+            * `NE` - Niger
+            * `NG` - Nigeria
+            * `NU` - Niue
+            * `NF` - Norfolk Island
+            * `KP` - North Korea
+            * `MK` - North Macedonia
+            * `MP` - Northern Mariana Islands
+            * `NO` - Norway
+            * `OM` - Oman
+            * `PK` - Pakistan
+            * `PW` - Palau
+            * `PS` - Palestine, State of
+            * `PA` - Panama
+            * `PG` - Papua New Guinea
+            * `PY` - Paraguay
+            * `PE` - Peru
+            * `PH` - Philippines
+            * `PN` - Pitcairn
+            * `PL` - Poland
+            * `PT` - Portugal
+            * `PR` - Puerto Rico
+            * `QA` - Qatar
+            * `RE` - Réunion
+            * `RO` - Romania
+            * `RU` - Russia
+            * `RW` - Rwanda
+            * `BL` - Saint Barthélemy
+            * `SH` - Saint Helena, Ascension and Tristan da Cunha
+            * `KN` - Saint Kitts and Nevis
+            * `LC` - Saint Lucia
+            * `MF` - Saint Martin (French part)
+            * `PM` - Saint Pierre and Miquelon
+            * `VC` - Saint Vincent and the Grenadines
+            * `WS` - Samoa
+            * `SM` - San Marino
+            * `ST` - Sao Tome and Principe
+            * `SA` - Saudi Arabia
+            * `SN` - Senegal
+            * `RS` - Serbia
+            * `SC` - Seychelles
+            * `SL` - Sierra Leone
+            * `SG` - Singapore
+            * `SX` - Sint Maarten (Dutch part)
+            * `SK` - Slovakia
+            * `SI` - Slovenia
+            * `SB` - Solomon Islands
+            * `SO` - Somalia
+            * `ZA` - South Africa
+            * `GS` - South Georgia and the South Sandwich Islands
+            * `KR` - South Korea
+            * `SS` - South Sudan
+            * `ES` - Spain
+            * `LK` - Sri Lanka
+            * `SD` - Sudan
+            * `SR` - Suriname
+            * `SJ` - Svalbard and Jan Mayen
+            * `SE` - Sweden
+            * `CH` - Switzerland
+            * `SY` - Syria
+            * `TW` - Taiwan
+            * `TJ` - Tajikistan
+            * `TZ` - Tanzania
+            * `TH` - Thailand
+            * `TL` - Timor-Leste
+            * `TG` - Togo
+            * `TK` - Tokelau
+            * `TO` - Tonga
+            * `TT` - Trinidad and Tobago
+            * `TN` - Tunisia
+            * `TR` - Türkiye
+            * `TM` - Turkmenistan
+            * `TC` - Turks and Caicos Islands
+            * `TV` - Tuvalu
+            * `UG` - Uganda
+            * `UA` - Ukraine
+            * `AE` - United Arab Emirates
+            * `GB` - United Kingdom
+            * `UM` - United States Minor Outlying Islands
+            * `US` - United States of America
+            * `UY` - Uruguay
+            * `UZ` - Uzbekistan
+            * `VU` - Vanuatu
+            * `VE` - Venezuela
+            * `VN` - Vietnam
+            * `VG` - Virgin Islands (British)
+            * `VI` - Virgin Islands (U.S.)
+            * `WF` - Wallis and Futuna
+            * `EH` - Western Sahara
+            * `YE` - Yemen
+            * `ZM` - Zambia
+            * `ZW` - Zimbabwe
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        zip:
+          type:
+          - string
+          - 'null'
+          title: ZIP code
+          description: ZIP code
+        parent:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Parent event - e.g. festival
+        sync_type:
+          title: Synchronisation type
+          description: |-
+            How the videos should be synchronised
+
+            * `datetime` - Capture date & time
+            * `audio_time` - Audio track sync
+          oneOf:
+          - $ref: '#/components/schemas/SyncTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        vertical_videos:
+          type:
+          - boolean
+          - 'null'
+          description: If True, vertical videos are preferred
+        final_videos_count:
+          type: integer
+          description: |-
+            Returns number of final videos of the event, recomputes if necessary
+            :return:
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - final_videos_count
+      - id
+      - img_height
+      - img_width
+      - modified
+      - name
+      - organizer
+      - recording_end_time
+      - slug
+      - start_time
+      - type
+      - venue
+    EventList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: Name of the event
+          maxLength: 150
+        sub_name:
+          type:
+          - string
+          - 'null'
+          description: Sub-name of the event
+        short_name:
+          type: string
+          description: Shorter name of the event
+          maxLength: 60
+        slug:
+          type: string
+          description: Unique slug / hashtag
+          maxLength: 50
+        type:
+          $ref: '#/components/schemas/EventType'
+        image:
+          type:
+          - string
+          - 'null'
+          format: uri
+          title: Event image
+          description: Path to the image
+        img_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Image width (readonly)
+        img_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Image height (readonly)
+        private:
+          type: boolean
+          description: Marks a private event
+        start_time:
+          type: string
+          format: date-time
+          title: Event start time
+          description: Event start date and time
+        recording_start_time:
+          type: string
+          format: date-time
+          description: Date and time when it's allowed to start recording
+        recording_end_time:
+          type: string
+          format: date-time
+          description: Date and time until when it's allowed to record
+        upload_end_time:
+          type: string
+          format: date-time
+          description: Date and time until when the upload should be finished.
+        venue:
+          type: string
+          description: Name of the venue
+          maxLength: 200
+        stage:
+          type: string
+          description: Name of the stage (optional)
+          maxLength: 200
+        street:
+          type:
+          - string
+          - 'null'
+          description: Street and number
+        city:
+          type:
+          - string
+          - 'null'
+          description: City
+        country:
+          description: |-
+            Country code
+
+            * `AF` - Afghanistan
+            * `AX` - Åland Islands
+            * `AL` - Albania
+            * `DZ` - Algeria
+            * `AS` - American Samoa
+            * `AD` - Andorra
+            * `AO` - Angola
+            * `AI` - Anguilla
+            * `AQ` - Antarctica
+            * `AG` - Antigua and Barbuda
+            * `AR` - Argentina
+            * `AM` - Armenia
+            * `AW` - Aruba
+            * `AU` - Australia
+            * `AT` - Austria
+            * `AZ` - Azerbaijan
+            * `BS` - Bahamas
+            * `BH` - Bahrain
+            * `BD` - Bangladesh
+            * `BB` - Barbados
+            * `BY` - Belarus
+            * `BE` - Belgium
+            * `BZ` - Belize
+            * `BJ` - Benin
+            * `BM` - Bermuda
+            * `BT` - Bhutan
+            * `BO` - Bolivia
+            * `BQ` - Bonaire, Sint Eustatius and Saba
+            * `BA` - Bosnia and Herzegovina
+            * `BW` - Botswana
+            * `BV` - Bouvet Island
+            * `BR` - Brazil
+            * `IO` - British Indian Ocean Territory
+            * `BN` - Brunei
+            * `BG` - Bulgaria
+            * `BF` - Burkina Faso
+            * `BI` - Burundi
+            * `CV` - Cabo Verde
+            * `KH` - Cambodia
+            * `CM` - Cameroon
+            * `CA` - Canada
+            * `KY` - Cayman Islands
+            * `CF` - Central African Republic
+            * `TD` - Chad
+            * `CL` - Chile
+            * `CN` - China
+            * `CX` - Christmas Island
+            * `CC` - Cocos (Keeling) Islands
+            * `CO` - Colombia
+            * `KM` - Comoros
+            * `CG` - Congo
+            * `CD` - Congo (the Democratic Republic of the)
+            * `CK` - Cook Islands
+            * `CR` - Costa Rica
+            * `CI` - Côte d'Ivoire
+            * `HR` - Croatia
+            * `CU` - Cuba
+            * `CW` - Curaçao
+            * `CY` - Cyprus
+            * `CZ` - Czechia
+            * `DK` - Denmark
+            * `DJ` - Djibouti
+            * `DM` - Dominica
+            * `DO` - Dominican Republic
+            * `EC` - Ecuador
+            * `EG` - Egypt
+            * `SV` - El Salvador
+            * `GQ` - Equatorial Guinea
+            * `ER` - Eritrea
+            * `EE` - Estonia
+            * `SZ` - Eswatini
+            * `ET` - Ethiopia
+            * `FK` - Falkland Islands (Malvinas)
+            * `FO` - Faroe Islands
+            * `FJ` - Fiji
+            * `FI` - Finland
+            * `FR` - France
+            * `GF` - French Guiana
+            * `PF` - French Polynesia
+            * `TF` - French Southern Territories
+            * `GA` - Gabon
+            * `GM` - Gambia
+            * `GE` - Georgia
+            * `DE` - Germany
+            * `GH` - Ghana
+            * `GI` - Gibraltar
+            * `GR` - Greece
+            * `GL` - Greenland
+            * `GD` - Grenada
+            * `GP` - Guadeloupe
+            * `GU` - Guam
+            * `GT` - Guatemala
+            * `GG` - Guernsey
+            * `GN` - Guinea
+            * `GW` - Guinea-Bissau
+            * `GY` - Guyana
+            * `HT` - Haiti
+            * `HM` - Heard Island and McDonald Islands
+            * `VA` - Holy See
+            * `HN` - Honduras
+            * `HK` - Hong Kong
+            * `HU` - Hungary
+            * `IS` - Iceland
+            * `IN` - India
+            * `ID` - Indonesia
+            * `IR` - Iran
+            * `IQ` - Iraq
+            * `IE` - Ireland
+            * `IM` - Isle of Man
+            * `IL` - Israel
+            * `IT` - Italy
+            * `JM` - Jamaica
+            * `JP` - Japan
+            * `JE` - Jersey
+            * `JO` - Jordan
+            * `KZ` - Kazakhstan
+            * `KE` - Kenya
+            * `KI` - Kiribati
+            * `KW` - Kuwait
+            * `KG` - Kyrgyzstan
+            * `LA` - Laos
+            * `LV` - Latvia
+            * `LB` - Lebanon
+            * `LS` - Lesotho
+            * `LR` - Liberia
+            * `LY` - Libya
+            * `LI` - Liechtenstein
+            * `LT` - Lithuania
+            * `LU` - Luxembourg
+            * `MO` - Macao
+            * `MG` - Madagascar
+            * `MW` - Malawi
+            * `MY` - Malaysia
+            * `MV` - Maldives
+            * `ML` - Mali
+            * `MT` - Malta
+            * `MH` - Marshall Islands
+            * `MQ` - Martinique
+            * `MR` - Mauritania
+            * `MU` - Mauritius
+            * `YT` - Mayotte
+            * `MX` - Mexico
+            * `FM` - Micronesia (Federated States of)
+            * `MD` - Moldova
+            * `MC` - Monaco
+            * `MN` - Mongolia
+            * `ME` - Montenegro
+            * `MS` - Montserrat
+            * `MA` - Morocco
+            * `MZ` - Mozambique
+            * `MM` - Myanmar
+            * `NA` - Namibia
+            * `NR` - Nauru
+            * `NP` - Nepal
+            * `NL` - Netherlands
+            * `NC` - New Caledonia
+            * `NZ` - New Zealand
+            * `NI` - Nicaragua
+            * `NE` - Niger
+            * `NG` - Nigeria
+            * `NU` - Niue
+            * `NF` - Norfolk Island
+            * `KP` - North Korea
+            * `MK` - North Macedonia
+            * `MP` - Northern Mariana Islands
+            * `NO` - Norway
+            * `OM` - Oman
+            * `PK` - Pakistan
+            * `PW` - Palau
+            * `PS` - Palestine, State of
+            * `PA` - Panama
+            * `PG` - Papua New Guinea
+            * `PY` - Paraguay
+            * `PE` - Peru
+            * `PH` - Philippines
+            * `PN` - Pitcairn
+            * `PL` - Poland
+            * `PT` - Portugal
+            * `PR` - Puerto Rico
+            * `QA` - Qatar
+            * `RE` - Réunion
+            * `RO` - Romania
+            * `RU` - Russia
+            * `RW` - Rwanda
+            * `BL` - Saint Barthélemy
+            * `SH` - Saint Helena, Ascension and Tristan da Cunha
+            * `KN` - Saint Kitts and Nevis
+            * `LC` - Saint Lucia
+            * `MF` - Saint Martin (French part)
+            * `PM` - Saint Pierre and Miquelon
+            * `VC` - Saint Vincent and the Grenadines
+            * `WS` - Samoa
+            * `SM` - San Marino
+            * `ST` - Sao Tome and Principe
+            * `SA` - Saudi Arabia
+            * `SN` - Senegal
+            * `RS` - Serbia
+            * `SC` - Seychelles
+            * `SL` - Sierra Leone
+            * `SG` - Singapore
+            * `SX` - Sint Maarten (Dutch part)
+            * `SK` - Slovakia
+            * `SI` - Slovenia
+            * `SB` - Solomon Islands
+            * `SO` - Somalia
+            * `ZA` - South Africa
+            * `GS` - South Georgia and the South Sandwich Islands
+            * `KR` - South Korea
+            * `SS` - South Sudan
+            * `ES` - Spain
+            * `LK` - Sri Lanka
+            * `SD` - Sudan
+            * `SR` - Suriname
+            * `SJ` - Svalbard and Jan Mayen
+            * `SE` - Sweden
+            * `CH` - Switzerland
+            * `SY` - Syria
+            * `TW` - Taiwan
+            * `TJ` - Tajikistan
+            * `TZ` - Tanzania
+            * `TH` - Thailand
+            * `TL` - Timor-Leste
+            * `TG` - Togo
+            * `TK` - Tokelau
+            * `TO` - Tonga
+            * `TT` - Trinidad and Tobago
+            * `TN` - Tunisia
+            * `TR` - Türkiye
+            * `TM` - Turkmenistan
+            * `TC` - Turks and Caicos Islands
+            * `TV` - Tuvalu
+            * `UG` - Uganda
+            * `UA` - Ukraine
+            * `AE` - United Arab Emirates
+            * `GB` - United Kingdom
+            * `UM` - United States Minor Outlying Islands
+            * `US` - United States of America
+            * `UY` - Uruguay
+            * `UZ` - Uzbekistan
+            * `VU` - Vanuatu
+            * `VE` - Venezuela
+            * `VN` - Vietnam
+            * `VG` - Virgin Islands (British)
+            * `VI` - Virgin Islands (U.S.)
+            * `WF` - Wallis and Futuna
+            * `EH` - Western Sahara
+            * `YE` - Yemen
+            * `ZM` - Zambia
+            * `ZW` - Zimbabwe
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        zip:
+          type:
+          - string
+          - 'null'
+          title: ZIP code
+          description: ZIP code
+        parent:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Parent event - e.g. festival
+        final_videos_count:
+          type: integer
+          description: |-
+            Returns number of final videos of the event, recomputes if necessary
+            :return:
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - final_videos_count
+      - id
+      - img_height
+      - img_width
+      - modified
+      - name
+      - recording_end_time
+      - slug
+      - start_time
+      - type
+      - venue
+    EventOrganizer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/EventOrganizerType'
+        name:
+          type: string
+          maxLength: 150
+        avatar:
+          type:
+          - string
+          - 'null'
+          format: uri
+        avatar_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        avatar_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+      required:
+      - avatar_height
+      - avatar_width
+      - created
+      - id
+      - modified
+      - name
+      - type
+    EventOrganizerType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of the event organizer type
+          maxLength: 60
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CategoryEnum'
+          description: |-
+            Category of the event organizer type
+
+            * `music` - Music
+            * `sport` - Sport
+            * `culture` - Culture
+            * `business` - Business
+            * `education` - Education
+            * `charity` - Charity
+      required:
+      - id
+      - name
+    EventType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Name of the event type
+          maxLength: 60
+        display_name:
+          type:
+          - string
+          - 'null'
+          description: Name displayed e.g. in notifications
+        category:
+          allOf:
+          - $ref: '#/components/schemas/CategoryEnum'
+          description: |-
+            Category of the event type
+
+            * `music` - Music
+            * `sport` - Sport
+            * `culture` - Culture
+            * `business` - Business
+            * `education` - Education
+            * `charity` - Charity
+      required:
+      - id
+      - name
+    FavoriteAdd:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        event:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Event ID
+        organizer:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Organizer ID
+      required:
+      - event
+      - id
+      - organizer
+    FavoriteRemove:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+      required:
+      - id
+    LanguageEnum:
+      enum:
+      - en
+      - cs
+      type: string
+      description: |-
+        * `en` - English
+        * `cs` - Czech
+    NullEnum:
+      type: 'null'
+    PaginatedAppEventList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppEvent'
+    PaginatedAppEventOrganizerList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppEventOrganizer'
+    PaginatedEventListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventList'
+    PaginatedEventOrganizerList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventOrganizer'
+    PaginatedUserVideoListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserVideoList'
+    PatchedUserUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+          description: Email address of the user - unique system-wide
+        first_name:
+          type: string
+          description: User's first name
+          maxLength: 50
+        last_name:
+          type: string
+          description: User's last name
+          maxLength: 50
+        avatar:
+          type:
+          - string
+          - 'null'
+          format: uri
+          readOnly: true
+          description: User's avatar image URL
+        avatar_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Width of the avatar image
+        avatar_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Height of the avatar image
+        firebase_id:
+          type: string
+          readOnly: true
+          description: Firebase UID
+        fcm_token:
+          type: string
+          description: Firebase Cloud Messaging Token
+          maxLength: 165
+        language:
+          oneOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        registered:
+          type: boolean
+          readOnly: true
+          description: True if the user is authenticated in Firebase
+    PatchedUserVideoUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        file:
+          type: string
+        thumb:
+          type: string
+        length:
+          type: string
+          format: time
+          writeOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        deceased:
+          type: boolean
+          readOnly: true
+          description: Marks a trashed item
+        thumb_width:
+          type: integer
+          readOnly: true
+          description: Width of the thumbnail
+        thumb_height:
+          type: integer
+          readOnly: true
+          description: Height of the thumbnail
+        chunks_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 32767
+          minimum: 0
+        chunks_rotation:
+          description: |-
+            Degrees of rotation of the video
+
+            * `0` - 0
+            * `-90` - -90
+            * `-180` - -180
+            * `-270` - -270
+            * `90` - 90
+            * `180` - 180
+            * `270` - 270
+          oneOf:
+          - $ref: '#/components/schemas/ChunksRotationEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        upload_status:
+          allOf:
+          - $ref: '#/components/schemas/UploadStatusEnum'
+          readOnly: true
+          description: |-
+            Status of the upload
+
+            * `created` - Created
+            * `upload_started` - Upload started
+            * `upload_finished` - Upload finished
+            * `upload_failed` - Upload failed
+        uploaded_fraction:
+          type:
+          - number
+          - 'null'
+          format: double
+          readOnly: true
+          description: Fraction of the uploaded chunks (between 0 and 1)
+        platform:
+          description: |-
+            Platform which was used when recording the video
+
+            * `ios` - iOS
+            * `android` - Android
+          oneOf:
+          - $ref: '#/components/schemas/PlatformEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        app_version:
+          type:
+          - string
+          - 'null'
+          description: Version of the mobile application which was used
+        manual_upload:
+          type:
+          - boolean
+          - 'null'
+          description: Manually uploaded from gallery
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the video
+        creation_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Time when the video was taken
+        owner:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Owner of the item
+        event:
+          type: string
+          format: uuid
+          description: Related event
+    PlatformEnum:
+      enum:
+      - ios
+      - android
+      type: string
+      description: |-
+        * `ios` - iOS
+        * `android` - Android
+    SyncTypeEnum:
+      enum:
+      - datetime
+      - audio_time
+      type: string
+      description: |-
+        * `datetime` - Capture date & time
+        * `audio_time` - Audio track sync
+    UploadStatusEnum:
+      enum:
+      - created
+      - upload_started
+      - upload_finished
+      - upload_failed
+      type: string
+      description: |-
+        * `created` - Created
+        * `upload_started` - Upload started
+        * `upload_finished` - Upload finished
+        * `upload_failed` - Upload failed
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          title: Email address
+          description: Email address of the user - unique system-wide
+          maxLength: 512
+        first_name:
+          type: string
+          description: User's first name
+          maxLength: 50
+        last_name:
+          type: string
+          description: User's last name
+          maxLength: 50
+        avatar:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: User's avatar image URL
+        avatar_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Width of the avatar image
+        avatar_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Height of the avatar image
+        firebase_id:
+          type: string
+          description: Firebase UID
+          maxLength: 40
+        fcm_token:
+          type: string
+          description: Firebase Cloud Messaging Token
+          maxLength: 165
+        language:
+          oneOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        registered:
+          type: boolean
+          description: True if the user is authenticated in Firebase
+      required:
+      - avatar_height
+      - avatar_width
+      - email
+      - first_name
+      - id
+      - last_name
+    UserCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+          description: Email address of the user - unique system-wide
+        first_name:
+          type: string
+          readOnly: true
+          description: User's first name
+        last_name:
+          type: string
+          readOnly: true
+          description: User's last name
+        avatar:
+          type:
+          - string
+          - 'null'
+          format: uri
+          readOnly: true
+          description: User's avatar image URL
+        avatar_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Width of the avatar image
+        avatar_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Height of the avatar image
+        firebase_id:
+          type: string
+          readOnly: true
+          description: Firebase UID
+        fcm_token:
+          type: string
+          readOnly: true
+          description: Firebase Cloud Messaging Token
+        language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          readOnly: true
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        registered:
+          type: boolean
+          readOnly: true
+          description: True if the user is authenticated in Firebase
+        uid:
+          type: string
+          writeOnly: true
+          description: Firebase UID
+      required:
+      - avatar
+      - avatar_height
+      - avatar_width
+      - email
+      - fcm_token
+      - firebase_id
+      - first_name
+      - id
+      - is_active
+      - language
+      - last_name
+      - registered
+      - uid
+    UserUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+          description: Email address of the user - unique system-wide
+        first_name:
+          type: string
+          description: User's first name
+          maxLength: 50
+        last_name:
+          type: string
+          description: User's last name
+          maxLength: 50
+        avatar:
+          type:
+          - string
+          - 'null'
+          format: uri
+          readOnly: true
+          description: User's avatar image URL
+        avatar_width:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Width of the avatar image
+        avatar_height:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Height of the avatar image
+        firebase_id:
+          type: string
+          readOnly: true
+          description: Firebase UID
+        fcm_token:
+          type: string
+          description: Firebase Cloud Messaging Token
+          maxLength: 165
+        language:
+          oneOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        registered:
+          type: boolean
+          readOnly: true
+          description: True if the user is authenticated in Firebase
+      required:
+      - avatar
+      - avatar_height
+      - avatar_width
+      - email
+      - firebase_id
+      - first_name
+      - id
+      - is_active
+      - last_name
+      - registered
+    UserVideo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        deceased:
+          type: boolean
+          description: Marks a trashed item
+        thumb:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Path to the thumbnail image
+        thumb_width:
+          type: integer
+          readOnly: true
+          description: Width of the thumbnail
+        thumb_height:
+          type: integer
+          readOnly: true
+          description: Height of the thumbnail
+        file:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Path to the video file
+        chunks_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 32767
+          minimum: 0
+        chunks_rotation:
+          description: |-
+            Degrees of rotation of the video
+
+            * `0` - 0
+            * `-90` - -90
+            * `-180` - -180
+            * `-270` - -270
+            * `90` - 90
+            * `180` - 180
+            * `270` - 270
+          oneOf:
+          - $ref: '#/components/schemas/ChunksRotationEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        upload_status:
+          allOf:
+          - $ref: '#/components/schemas/UploadStatusEnum'
+          description: |-
+            Status of the upload
+
+            * `created` - Created
+            * `upload_started` - Upload started
+            * `upload_finished` - Upload finished
+            * `upload_failed` - Upload failed
+        uploaded_fraction:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Fraction of the uploaded chunks (between 0 and 1)
+        platform:
+          description: |-
+            Platform which was used when recording the video
+
+            * `ios` - iOS
+            * `android` - Android
+          oneOf:
+          - $ref: '#/components/schemas/PlatformEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        app_version:
+          type:
+          - string
+          - 'null'
+          description: Version of the mobile application which was used
+        manual_upload:
+          type:
+          - boolean
+          - 'null'
+          description: Manually uploaded from gallery
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the video
+        creation_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Time when the video was taken
+        event:
+          type: string
+          format: uuid
+          description: Related event
+      required:
+      - created
+      - event
+      - id
+      - modified
+      - thumb_height
+      - thumb_width
+    UserVideoCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        deceased:
+          type: boolean
+          readOnly: true
+          description: Marks a trashed item
+        chunks_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 32767
+          minimum: 0
+        chunks_rotation:
+          description: |-
+            Degrees of rotation of the video
+
+            * `0` - 0
+            * `-90` - -90
+            * `-180` - -180
+            * `-270` - -270
+            * `90` - 90
+            * `180` - 180
+            * `270` - 270
+          oneOf:
+          - $ref: '#/components/schemas/ChunksRotationEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        upload_status:
+          allOf:
+          - $ref: '#/components/schemas/UploadStatusEnum'
+          readOnly: true
+          description: |-
+            Status of the upload
+
+            * `created` - Created
+            * `upload_started` - Upload started
+            * `upload_finished` - Upload finished
+            * `upload_failed` - Upload failed
+        uploaded_fraction:
+          type:
+          - number
+          - 'null'
+          format: double
+          readOnly: true
+          description: Fraction of the uploaded chunks (between 0 and 1)
+        platform:
+          description: |-
+            Platform which was used when recording the video
+
+            * `ios` - iOS
+            * `android` - Android
+          oneOf:
+          - $ref: '#/components/schemas/PlatformEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        app_version:
+          type:
+          - string
+          - 'null'
+          description: Version of the mobile application which was used
+        manual_upload:
+          type:
+          - boolean
+          - 'null'
+          description: Manually uploaded from gallery
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the video
+        creation_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Time when the video was taken
+        event:
+          type: string
+          format: uuid
+          description: Related event
+      required:
+      - created
+      - deceased
+      - event
+      - id
+      - modified
+      - upload_status
+      - uploaded_fraction
+    UserVideoList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        deceased:
+          type: boolean
+          description: Marks a trashed item
+        thumb:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Path to the thumbnail image
+        thumb_width:
+          type: integer
+          readOnly: true
+          description: Width of the thumbnail
+        thumb_height:
+          type: integer
+          readOnly: true
+          description: Height of the thumbnail
+        file:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Path to the video file
+        upload_status:
+          allOf:
+          - $ref: '#/components/schemas/UploadStatusEnum'
+          description: |-
+            Status of the upload
+
+            * `created` - Created
+            * `upload_started` - Upload started
+            * `upload_finished` - Upload finished
+            * `upload_failed` - Upload failed
+        uploaded_fraction:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Fraction of the uploaded chunks (between 0 and 1)
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the video
+        creation_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Time when the video was taken
+        event:
+          type: string
+          format: uuid
+          description: Related event
+      required:
+      - created
+      - event
+      - id
+      - modified
+      - thumb_height
+      - thumb_width
+    UserVideoUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        file:
+          type: string
+        thumb:
+          type: string
+        length:
+          type: string
+          format: time
+          writeOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+        deceased:
+          type: boolean
+          readOnly: true
+          description: Marks a trashed item
+        thumb_width:
+          type: integer
+          readOnly: true
+          description: Width of the thumbnail
+        thumb_height:
+          type: integer
+          readOnly: true
+          description: Height of the thumbnail
+        chunks_count:
+          type:
+          - integer
+          - 'null'
+          maximum: 32767
+          minimum: 0
+        chunks_rotation:
+          description: |-
+            Degrees of rotation of the video
+
+            * `0` - 0
+            * `-90` - -90
+            * `-180` - -180
+            * `-270` - -270
+            * `90` - 90
+            * `180` - 180
+            * `270` - 270
+          oneOf:
+          - $ref: '#/components/schemas/ChunksRotationEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        upload_status:
+          allOf:
+          - $ref: '#/components/schemas/UploadStatusEnum'
+          readOnly: true
+          description: |-
+            Status of the upload
+
+            * `created` - Created
+            * `upload_started` - Upload started
+            * `upload_finished` - Upload finished
+            * `upload_failed` - Upload failed
+        uploaded_fraction:
+          type:
+          - number
+          - 'null'
+          format: double
+          readOnly: true
+          description: Fraction of the uploaded chunks (between 0 and 1)
+        platform:
+          description: |-
+            Platform which was used when recording the video
+
+            * `ios` - iOS
+            * `android` - Android
+          oneOf:
+          - $ref: '#/components/schemas/PlatformEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        app_version:
+          type:
+          - string
+          - 'null'
+          description: Version of the mobile application which was used
+        manual_upload:
+          type:
+          - boolean
+          - 'null'
+          description: Manually uploaded from gallery
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the video
+        creation_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Time when the video was taken
+        owner:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Owner of the item
+        event:
+          type: string
+          format: uuid
+          description: Related event
+      required:
+      - created
+      - deceased
+      - event
+      - file
+      - id
+      - length
+      - modified
+      - owner
+      - thumb
+      - thumb_height
+      - thumb_width
+      - upload_status
+      - uploaded_fraction
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Firebase token-based authentication
